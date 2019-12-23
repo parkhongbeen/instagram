@@ -12,8 +12,16 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+# instagram/app/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# instagram/
+ROOT_DIR = os.path.dirname(BASE_DIR)
+
+# instagram/ .media
+# User-uploaded static files의 기본 경로
+MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 
 
 # Quick-start development settings - unsuitable for production
