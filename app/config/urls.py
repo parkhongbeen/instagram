@@ -17,13 +17,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name='index'),
+    path('members/', include('members.urls')),
 ]
 urlpatterns += static(
     # 앞부분이 /media/이면
     prefix='/media/',
-    # documnet_root위치에서 나머지 path에 해당하는 파일을 리턴
+    # document_root위치에서 나머지 path에 해당하는 일을 리턴
     document_root=settings.MEDIA_ROOT
 )
