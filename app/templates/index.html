@@ -8,6 +8,10 @@
 {% block content %}
 <div class="container-fluid">
     <div class="mr-auto ml-auto mt-3 col-lg-4 col-md-6 col-sm-8 col-10">
+        <div>{{ request.user }}</div>
+        <div>{{ request.user.is_authenticated }}</div>
+
+
         <div class="top-box card text-center p-4">
             <h1>Instagram</h1>
             <p class="text-secondary">친구들의 사진과 동영상을 보려면 가입하세요.</p>
