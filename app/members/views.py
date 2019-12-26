@@ -9,7 +9,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('index')
+            return redirect('posts:post-list')
         else:
             return redirect('members:login')
     return render(request, 'members/login.html')
