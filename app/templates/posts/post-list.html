@@ -4,5 +4,42 @@
     {% for post in posts %}
         <div>{{ post.author }}</div>
         <div>{{ post.created }}</div>
+        <!--
+            post_like에 POST요청을 보내는 Form구현
+            - input을 갖지 않음
+            - csrf_token만 추가
+           -  보내는곳 (action)에 {# url #} 태그를 적절히 활용
+              ex) /posts/1/like/
+                  /posts/2/like/
+             Post의 pk에 따라 위와 같은 URL을 동적으로 생성해야 함
+        -->
+        <form action="{% url 'posts:post-like' pk=post.pk %}" method="POST">
+            {% csrf_token %}
+            <!--
+            사용가능한 변수
+            - user (User)
+            - post (Post)
+
+            Template에서의 메서드 콜
+             post.like_users.all() -> post.like_users.all
+              호출구문()을 제외해야 합니다.
+
+            in operator
+            <변수> in <반복가능개(QuerySet등)>
+            -> True/False를 반환
+
+            user와 post.like_users를 적절히 이용해서
+            현재 request.user가 이 Post의 like_users에 포함되는지를 검사해서
+            아래의 if/else/denif구문이 동작하도록 작성해본다.
+            -->
+            {% if user in post.like_users.all %}
+                <div>좋아요 눌린 상태</div>
+            {% else %}
+                <div>좋아요 안눌린 상태</div>
+            {% endif %}
+            <button type="submit">
+                좋아요
+            </button>
+        </form>
     {% endfor %}
 {% endblock %}
