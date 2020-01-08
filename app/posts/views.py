@@ -51,3 +51,5 @@ def post_like(request, pk):
         PostLike.objects.create(post=post, user=user)
 
     return redirect('posts:post-list')
+
+

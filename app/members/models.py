@@ -4,3 +4,4 @@ from django.db import models
 
 class User(AbstractUser):
     img_profile = models.ImageField('프포필이미지', blank=True, upload_to='users/')
+    name = models.CharField('이름', max_length=100)
