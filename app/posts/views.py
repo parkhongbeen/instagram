@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Post, PostLike
+
+from .forms import PostCreateForm
+from .models import Post, PostLike, PostImage
 
 
 def post_list(request):
@@ -53,3 +55,31 @@ def post_like(request, pk):
     return redirect('posts:post-list')
 
 
+def post_create(request):
+    """
+    URL:        /posts/create/, name='post-create'
+    Template:   /posts/post=create.html/
+    forms.PostCreateForm을 사용
+    """
+
+    if request.method == 'POST':
+        image = request.FILES['image']
+        text = request.POST['text']
+
+        post = Post.objects.create(
+
+            author=request.user,
+            content=text
+        )
+        post.postimage_set.create(image=image)
+        # post_image = PostImage.objects.create(
+        #     post=post,
+        #     image=image,
+        # )
+        return redirect('posts:post-list')
+    else:
+        form = PostCreateForm
+        context = {
+            'form': form,
+        }
+        return render(request, 'posts/post-create.html', context)
