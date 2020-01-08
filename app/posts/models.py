@@ -9,7 +9,7 @@ class Post(models.Model):
     """
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(blank=True)
-    like_users = models.ManyToManyField(User, through='PostLike', related_name='like_posts_set')
+    like_users = models.ManyToManyField(User, through='PostLike', related_name='like_post_set')
     # author, like_users 각 각에 있는 user가 충돌나지않게 related_name을 사용
     created = models.DateTimeField(auto_now_add=True)
 

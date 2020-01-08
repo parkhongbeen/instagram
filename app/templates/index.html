@@ -20,8 +20,7 @@
             <form method="POST" action="{% url 'members:signup' %}">
                 {% csrf_token %}
                 <div class="form-group">
-                    <input name="email" type="email" class="form-control form-control-sm"
-                           placeholder="휴대폰 번호 또는 이메일 주소">
+                    <input name="email" type="email" class="form-control form-control-sm" placeholder="이메일 주소">
                 </div>
                 <div class="form-group">
                     <input name="name" type="text" class="form-control form-control-sm" placeholder="성명">

@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login, get_user_model, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.shortcuts import render, redirect
 
 # 장고 기본유저나 Custom유저모델 중, 사용중인 User모델을 가져옴
@@ -25,7 +25,10 @@ def signup_view(request):
         action만 이쪽으로
     URL: /members/signup/
     User에 name필드를 추가
-        email, username, name, password
+        email,
+        username,
+        name,
+        password
     를 전달받아, 새로운 User를 생성한다.
     생성시, User.objects.create_user() 메서드를 사용한다.
     이미 존재하는 username또는 email을 입력한 경우 "이미 사용중인 username/email입니다"라는 메시지를  HttpResponse로 돌려준다.

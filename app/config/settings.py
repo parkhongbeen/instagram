@@ -46,7 +46,6 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '172.16.1.193',
 ]
 AUTH_USER_MODEL = 'members.User'
 
