@@ -7,5 +7,6 @@ class PostCreateForm(forms.Form):
         Image(File)
         Text
     """
-    image = forms.ImageField(label='image')
+    image = forms.ImageField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True}))
     text = forms.CharField(max_length=100)
