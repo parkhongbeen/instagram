@@ -102,7 +102,7 @@ def comment_create(request, post_pk):
     #     <li><b>작성자명</b> <span>내용</span></li>
     #     <li><b>작성자명</b> <span>내용</span></li>
     # Form: post.forms.CommentCreateForm
-    if request.method ==  'POST':
+    if request.method == 'POST':
         post = Post.objects.get(pk=post_pk)
         # Form인스턴스를 만드는데, data에 request.POST로 전달된 dict를 입력
         form = CommentCreateForm(data=request.POST)
@@ -111,3 +111,4 @@ def comment_create(request, post_pk):
         if form.is_valid():
             form.save(post=post, author=request.user)
         return redirect('posts:post-list')
+

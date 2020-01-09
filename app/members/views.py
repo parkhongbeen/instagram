@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.shortcuts import render, redirect
 
 # 장고 기본유저나 Custom유저모델 중, 사용중인 User모델을 가져옴
+from members.forms import LoginForm
+
 User = get_user_model()
 
 
@@ -16,6 +18,10 @@ def login_view(request):
             return redirect('posts:post-list')
         else:
             return redirect('members:login')
+    form = LoginForm()
+    context = {
+        'form': form,
+    }
     return render(request, 'members/login.html')
 
 
