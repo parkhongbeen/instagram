@@ -16,17 +16,20 @@
                 <h1>Instagram</h1>
                 <form action="" method="POST">
                         {% csrf_token %}
+                    <!-- form이 가진 field들을 순회하며, 매 순회마다 .form-group을 만듬-->
                     {% for field in form %}
                     <div class=""form-group>
                         {{ field }}
                     </div>
                     {% endfor %}
-                    <div class="form-group">
-                        <input type="text" name="username" class="form-control" placeholder="휴대폰 번호 또는 이메일 주소">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" class="form-control" placeholder="비밀번호">
-                    </div>
+
+                    {% if form.non_field_errors %}
+                    <ul class="list-unstyled text-danger">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error|escape }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
                     <button class="btn btn-primary btn-block">로그인</button>
                 </form>
                 <hr>
