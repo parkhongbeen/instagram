@@ -4,7 +4,13 @@ from django.contrib.auth import login, get_user_model, logout
 from django.shortcuts import render, redirect
 
 # 장고 기본유저나 Custom유저모델 중, 사용중인 User모델을 가져옴
+from pip._vendor import requests
+
 from .forms import LoginForm, SignupForm
+
+import os
+import sys
+import urllib.request
 
 User = get_user_model()
 
@@ -26,8 +32,23 @@ def login_view(request):
             return redirect('posts:post-list')
     else:
         form = LoginForm()
+
+    login_base_url = 'https://nid.naver.com/oauth2.0/authorize'
+    login_params = {
+        'response_type': 'code',
+        'client_id': 'hdqQ83eZ6SeSEfePgkOA',
+        'redirect_uri': 'http://localhost:8000/members/naver-login/',
+        'state': 'RANDOM_STATE',
+    }
+
+    login_url = '{base}?{params}'.format(
+        base=login_base_url,
+        params='&'.join([f'{key}={value}' for key, value in login_params.items()])
+    )
+
     context = {
         'form': form,
+        'login_url': login_url,
     }
     return render(request, 'members/login.html', context)
 
@@ -51,6 +72,7 @@ def signup_view(request):
             return redirect('posts:post-list')
     else:
         form = SignupForm()
+
     context = {
         'form': form,
     }
@@ -69,3 +91,50 @@ def logout_view(request):
     """
     logout(request)
     return redirect('members:login')
+
+
+def naver_login(request):
+    code = request.GET.get('code')
+    state = request.GET.get('state')
+    if not code or not state:
+        return HttpResponse('code또는 state가 전달되지 않았습니다.')
+
+    token_base_url = 'https://nid.naver.com/oauth2.0/token'
+    token_params = {
+        'grant_type': 'authorization_code',
+        'client_id': 'hdqQ83eZ6SeSEfePgkOA',
+        'client_secret': 'T5bCLXiNv_',
+        'code': code,
+        'state': state,
+        'redirectURI': 'https://localhost:8000/members/naver-login/',
+    }
+    token_url = '{base}?{params}'.format(
+        base=token_base_url,
+        params='&'.join([f'{key}={value}' for key, value in token_params.items()])
+    )
+    response = requests.get(token_url)
+    print(response.text)
+    access_token = response.json()['access_token']
+    print(access_token)
+
+    me_url = 'https://openapi.naver.com/v1/nid/me'
+    me_headers = {
+        'Authorization': f'Bearer {access_token}',
+    }
+    me_response = requests.get(me_url, headers=me_headers)
+    me_response_data = me_response.json()
+    print(me_response_data)
+
+    unique_id = me_response_data['response']['id']
+    print(unique_id)
+
+    # n_{unique_id}의 username을 갖는 새로운 User를 생성
+    # 생성한 유저를 login시킴
+    # post:post-list로 이동시킴
+    naver_username = f'n_{unique_id}'
+    if not User.objects.filter(username=naver_username).exists():
+        user = User.objects.create_user(username=naver_username)
+    else:
+        user = User.objects.get(username=naver_username)
+    login(request, user)
+    return redirect('posts:post-list')
