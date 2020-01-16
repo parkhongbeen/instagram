@@ -4,7 +4,7 @@ from .forms import PostCreateForm, CommentCreateForm
 from .models import Post, PostLike, PostImage
 
 
-def post_list(request):
+def post_list(request, tag=None):
     # 1. 로그인 완료 후 이 페이지로 이동하도록 함
     # 2. index에 접근할 때 로그인이 되어 있다면, 이 페이지로 이동하도록 함
     #    로그인이 되어있는지 확인:
@@ -13,7 +13,25 @@ def post_list(request):
     # URL:      /posts/ (posts.urls을 사용, config.urls에서 include)
     # Template: templates/posts/post-list.html
     #           <h1>Post List</h1>
-    posts = Post.objects.order_by('-pk')
+    if tag is None:
+        posts = Post.objects.order_by('-pk')
+    else:
+        posts = Post.objects.filter(tags__name__iexact=tag).order_by('-pk')
+
+    comment_form = CommentCreateForm()
+    context = {
+        'posts': posts,
+        'comment_form': comment_form,
+    }
+    return render(request, 'posts/post-list.html', context)
+
+
+def post_list_by_tag(request, tag):
+    # URL: /explore/tags/<tag문자열>/
+    # Templates: /posts/post-list.html
+    # <tag문자열>인 Tag를 자신(post).tags에 가지고 있는 경우인 Post목록만 돌려줘야 함
+    # 이 내용 외에는 위의 post_list와 내용 동일
+    posts = Post.objects.filter(tags__name__iexact=tag).order_by('-pk')
     comment_form = CommentCreateForm()
     context = {
         'posts': posts,
@@ -111,4 +129,3 @@ def comment_create(request, post_pk):
         if form.is_valid():
             form.save(post=post, author=request.user)
         return redirect('posts:post-list')
-
