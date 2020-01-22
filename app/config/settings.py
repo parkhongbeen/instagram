@@ -34,6 +34,21 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 MEDIA_URL = '/media/'
 
+
+# instagram/secrets.json파일을 읽어서
+# 파이썬 객체로 만든다음
+# 1. 아래있는 ACCESS_KEY_ID, SECRET_ACCESS_KEY값을 적절히 채워준다
+# 2. DATAVASE쪽의 비밀정보
+# 3. naver_login에 있는 client_id,client_secret
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+AWS_STORAGE_BUCKET_NAME = 'wps-instagram-phb2'
+AWS_AUTO_CREATE_BUCKET = True
+AWS_S3_REGION_NAME = 'ap-northeast-2'
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
