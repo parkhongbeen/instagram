@@ -46,6 +46,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    '13.124.108.80',
+    '*',
 ]
 AUTH_USER_MODEL = 'members.User'
 
@@ -101,8 +103,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'instagram',
+        'USER': 'phb',
+        'PASSWORD': 'hong1065',
+        'HOST': 'wps-phb.cvbmkqzxyqhx.ap-northeast-2.rds.amazonaws.com',
+        'PORT': 5432,
     }
 }
 
