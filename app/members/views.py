@@ -2,9 +2,11 @@ from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.http import HttpResponse
 from django.contrib.auth import login, get_user_model, logout
 from django.shortcuts import render, redirect
+import sys
+import json
 
 # 장고 기본유저나 Custom유저모델 중, 사용중인 User모델을 가져옴
-from pip._vendor import requests
+import requests
 
 from .forms import LoginForm, SignupForm
 
@@ -66,7 +68,6 @@ def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
             user = form.save()
             login(request, user)
             return redirect('posts:post-list')
@@ -94,6 +95,16 @@ def logout_view(request):
 
 
 def naver_login(request):
+    '''
+    secret 파일 가져오기
+    '''
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    # instagram/
+    ROOT_DIR = os.path.dirname(BASE_DIR)
+    SECRETS_PATH = os.path.join(ROOT_DIR, 'secrets.json')
+    secrets = json.loads(open(SECRETS_PATH).read())
+
     code = request.GET.get('code')
     state = request.GET.get('state')
     if not code or not state:
@@ -102,8 +113,8 @@ def naver_login(request):
     token_base_url = 'https://nid.naver.com/oauth2.0/token'
     token_params = {
         'grant_type': 'authorization_code',
-        'client_id': 'hdqQ83eZ6SeSEfePgkOA',
-        'client_secret': 'T5bCLXiNv_',
+        'client_id': secrets['client_id'],
+        'client_secret': secrets['client_secret'],
         'code': code,
         'state': state,
         'redirectURI': 'https://localhost:8000/members/naver-login/',

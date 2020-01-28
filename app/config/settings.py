@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
+import json
 
 # instagram/app/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -18,9 +20,22 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # instagram/
 ROOT_DIR = os.path.dirname(BASE_DIR)
+SECRETS_PATH = os.path.join(ROOT_DIR, 'secrets.json')
+secrets = json.loads(open(SECRETS_PATH).read())
+os.environ
+
+for key, value in secrets.items():
+    setattr(sys.modules[__name__], key, value)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = secrets['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = secrets['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = 'wps-instagram-phb2'
+AWS_AUTO_CREATE_BUCKET = True
+AWS_S3_REGION_NAME = 'ap-northeast-2'
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
@@ -41,19 +56,12 @@ MEDIA_URL = '/media/'
 # 2. DATAVASE쪽의 비밀정보
 # 3. naver_login에 있는 client_id,client_secret
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
-AWS_STORAGE_BUCKET_NAME = 'wps-instagram-phb2'
-AWS_AUTO_CREATE_BUCKET = True
-AWS_S3_REGION_NAME = 'ap-northeast-2'
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd&dcg3g(*h-la$*5hoc=sq84wfk)u0%=cyvz@6z!js6%()c4cu'
+SECRET_KEY = secrets['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -61,7 +69,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '13.124.108.80',
+    '',
     '*',
 ]
 AUTH_USER_MODEL = 'members.User'
@@ -115,14 +123,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'instagram',
-        'USER': 'phb',
-        'PASSWORD': 'hong1065',
-        'HOST': 'wps-phb.cvbmkqzxyqhx.ap-northeast-2.rds.amazonaws.com',
+        'NAME': secrets['NAME'],
+        'USER': secrets['USER'],
+        'PASSWORD': secrets['PASSWORD'],
+        'HOST': secrets['HOST'],
         'PORT': 5432,
     }
 }
