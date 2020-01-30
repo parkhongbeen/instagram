@@ -1,4 +1,6 @@
-secrets.json
+/requirements.txt
+/secrets.json
+
 
 # Django User-upload static files root
 /.media

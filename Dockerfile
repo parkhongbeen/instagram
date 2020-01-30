@@ -2,10 +2,10 @@ FROM        python:3.7-slim
 
 RUN         apt -y update && apt -y dist-upgrade && apt -y autoremove
 
-# requirements를 /tmp에 복사 후, pip install실행
+# 2. poetry export로 생성된 requirements.txt를 적절히 복사
 COPY        ./.requirements/base.txt /tmp/
-COPY        ./.requirements/production.txt /tmp/
-RUN         pip install -r /tmp/production.txt
+COPY        ./.requirements/requirement.txt /tmp/
+RUN         pip install -r /tmp/requirement.txt
 
 # 소스코드 복사 후 runserver
 COPY        . /srv/instagram

@@ -15,7 +15,12 @@ ${SSH_CMD} -C 'sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt dist-u
 echo "apt install docker.io"
 ${SSH_CMD} -C 'sudo apt -y install docker.io'
 
+echo "portry export"
+poetry export -f requirements.txt > requirements.txt
+
 # docker build
+# 1. 이 과정에서 poetry export를 사용해서 requirements를 생성
+#   > dev패키지는 설치하지 않도록 한다.(공식문서 또는 사용법 보기)
 echo "docker build"
 docker build -q -t ${DOCKER_REPO} -f Dockerfile "${ORIGIN_SOURCE}"
 
