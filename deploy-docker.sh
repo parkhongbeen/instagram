@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 IDENTITY_FILE="$HOME/.ssh/wps12th.pem"
 USER="ubuntu"
-HOST="13.209.69.232"
+HOST="15.164.103.235"
 TARGET=${USER}@${HOST}
 ORIGIN_SOURCE="$HOME/projects/wps12th/instagram/"
 DOCKER_REPO="pack122/wps-instagram"

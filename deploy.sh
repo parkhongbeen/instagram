@@ -8,8 +8,6 @@ SSH_CMD="ssh -i ${IDENTIFY_FILE} ${HOST}"
 
 echo "==runserver 배포=="
 # pip freeze
-
-
 echo "pip freeze"
 "$HOME"/.pyenv/versions/3.7.5/envs/wps-instagram-env/bin/pip freeze > "$HOME"/projects/wps12th/instagram/requirements.txt
 
