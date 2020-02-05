@@ -26,7 +26,7 @@ DOCKER_OPTIONS = [
 DOCKER_IMAGE_TAG = 'pack122/wps-instagram'
 
 # poetry export로  docker build시 사용할 requirements.txt작성
-subprocess.run(f'poetry export -f requirements.txt > requirments.txt', shell=True)
+subprocess.run(f'poetry export -f requirements.txt > requirements.txt', shell=True)
 # secrets.json이 없는 이미지를 build
 subprocess.run(f'docker build -t {DOCKER_IMAGE_TAG} -f Dockerfile .', shell=True)
 # 이미 실해오디고 있는 name=instagram인 container를 종료
@@ -47,7 +47,7 @@ subprocess.run('docker exec -it instagram python manage.py collectstatic --noinp
 
 # 실행중인 name=instagram인 container에서 argparse로 입력받은 cmd 또는 bash를 실행(foreground 모드)
 subprocess.run('docker exec -it instagram {cmd}'.format(
-    cmd=' '.join(args.cmd) if args.cmd else '/bin/bash'
+    cmd=' '.join(args.cmd) if args.cmd else 'supervisord -c ../.config/supervisord.conf -n'
 ), shell=True)
 
 # 1.collectstatic을 subprocess.run()을 사용해서 실행
