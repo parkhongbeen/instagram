@@ -13,4 +13,7 @@ server {
         # /run/gunicorn.sock파일을 사용해서 Gunicorn과 소캣통신하는 Proxy구성
         proxy_pass      http://unix:/run/instagram.sock;
     }
+    location /static/ {
+        alias         /srv/instagram/.static/;
+    }
 }

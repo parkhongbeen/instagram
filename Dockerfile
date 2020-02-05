@@ -19,3 +19,6 @@ RUN         cp /srv/instagram/.config/instagram.nginx /etc/nginx/sites-enabled/
 #   gunicorn -b unix:/run/instagram.sock config.wsgi
 #  Nginx실행 (Foreground모드로)
 #   nginx -g "daemon off;"
+
+# collectstatic //--noinput명령어를 사용하면 묻지않고 그대로 -y로 실행
+#RUN         python manage.py collectstatic --noinput
