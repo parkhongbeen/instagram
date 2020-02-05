@@ -11,10 +11,14 @@ DOCKER_OPTIONS = [
 ]
 DOCKER_IMAGE_TAG = 'pack122/wps-instagram'
 
+# poetry export로  docker build시 사용할 requirements.txt작성
+subprocess.run(f'poetry export -f requirements.txt > requirments.txt', shell=True)
+# secrets.json이 없는 이미지를 build
 subprocess.run(f'docker build -t {DOCKER_IMAGE_TAG} -f Dockerfile .', shell=True)
+# 이미 실해오디고 있는 name=instagram인 container를 종료
 subprocess.run(f'docker stop instagram', shell=True)
 
-# secrets.json이 없는 상태로 docker run으로 bash를 실행 -> background로 들어감
+# secrets.json이 없는 이미지를 docker run으로 bash를 daemon(background)모드로 실행
 subprocess.run('docker run {options} {tag} /bin/bash'.format(
     options=' '.join([
         f'{key} {value}' for key, value in DOCKER_OPTIONS
@@ -22,10 +26,10 @@ subprocess.run('docker run {options} {tag} /bin/bash'.format(
     tag=DOCKER_IMAGE_TAG,
 ), shell=True)
 
-# secrets.json을 전송
+# secrets.json을 name=instagram인 container에 전송
 subprocess.run('docker cp secrets.json instagram:/srv/instagram', shell=True)
 
-# bash실행
+# 실행중인 name=instagram인 container에서 bash를 실행(foreground 모드)
 subprocess.run('docker exec -it instagram /bin/bash', shell=True)
 
 # runserver명령을 전송

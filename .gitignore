@@ -2,8 +2,10 @@
 /secrets.json
 
 
+.idea
 # Django User-upload static files root
 /.media
+/.static
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
