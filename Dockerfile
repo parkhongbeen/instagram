@@ -11,10 +11,12 @@ RUN         pip install -r /tmp/requirements.txt
 COPY        . /srv/instagram
 WORKDIR     /srv/instagram/app
 
-
-# Nginx설정파일을 복사
+# Nginx설정파일을 복사, 기본 서버 설정 삭제
+RUN         rm /etc/nginx/sites-enabled/default
 RUN         cp /srv/instagram/.config/instagram.nginx /etc/nginx/sites-enabled/
 
+# 로그폴더 생성
+RUN         mkdir /var/log/gunicorn
 
 CMD         /bin/bash
 # Gunicorn실행 (/run/instagram.sock파일을 사용해서 config.wsgi모듈과 통신)

@@ -1,19 +1,34 @@
 server {
     # 80번 포트로 온 요청에 응답할 Block임
     listen 80;
+    server_name hongbeen.xyz www.hongbeen.xyz;
+    charset utf-8;
 
-    # HTTP요청의 Host값 (URL에 입력한 도메인)
-    server_name localhost;
+    # Let's Encrypt
+    location /.well-known/acme-challenge/ {
+        alias           /srv/instagram/.cert/;
+    }
+    # .well-known외의 모든 요청을 https로 다시 요청하도록 redirect
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
 
-    # 인코딩 UTF-8설정
+server {
+    listen 443 ssl;
+    server_name hongbeen.xyz www.hongbeen.xyz;
     charset urf-8;
 
-    # root로부터의 요청에 대한 응답한 Block
+    ssl on;
+    ssl_certificate     /etc/letsencrypt/live/hongbeen.xyz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hongbeen.xyz/privkey.pem;
+
     location / {
-        # /run/gunicorn.sock파일을 사용해서 Gunicorn과 소캣통신하는 Proxy구성
-        proxy_pass      http://unix:/run/instagram.sock;
+        # 일반적으로 proxy로 요청을 넘겨 줄 경우 필요한 설정들
+        include    /etc/nginx/proxy_params;
+        proxy_pass http://unix:/run/instagram.sock;
     }
     location /static/ {
-        alias         /srv/instagram/.static/;
+        alias           /srv/instagram/.static/;
     }
 }
