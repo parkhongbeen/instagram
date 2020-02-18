@@ -2,11 +2,6 @@ from django import forms
 
 
 class PostCreateForm(forms.Form):
-    """
-    이 Form에 들어갈 입력요소
-        Image(File)
-        Text
-    """
     image = forms.ImageField(
         widget=forms.ClearableFileInput(
             attrs={
@@ -15,7 +10,13 @@ class PostCreateForm(forms.Form):
             }
         )
     )
-    text = forms.CharField()
+    text = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
 
     def save(self):
         pass
@@ -24,7 +25,12 @@ class PostCreateForm(forms.Form):
 class CommentCreateForm(forms.Form):
     content = forms.CharField(
         max_length=10,
-        widget=forms.Textarea()
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control',
+                'rows': 2,
+            }
+        )
     )
 
     def save(self, post, author):
