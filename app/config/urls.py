@@ -25,6 +25,7 @@ from . import views
 
 urlpatterns_apis = [
     path('members/', include('members.urls.apis')),
+    path('posts/', include('posts.urls.apis')),
 ]
 
 urlpatterns = [
@@ -33,7 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', signup_view, name='signup'),
     path('members/', include('members.urls.views')),
-    path('posts/', include('posts.urls')),
+    path('posts/', include('posts.urls.views')),
 
     path('explore/tags/<str:tag>/', post_list_by_tag, name='post=list-by-tag'),
 ]
