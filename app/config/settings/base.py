@@ -9,11 +9,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import json
 import os
 
-DEBUG = True
-SECRET_KEY = 'l4ux!g)8(18*h)02j*j)y-+@cy$_l-q$4%1b_#i3++(#+5nr$l'
+
 
 # instagram/app/
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # instagram/
 ROOT_DIR = os.path.dirname(BASE_DIR)
@@ -34,14 +33,16 @@ MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 MEDIA_URL = '/media/'
 
 # secrets.json불러오기
-SECRETS = json.load(open(os.path.join(ROOT_DIR, 'secrets.json')))
+SECRETS_FULL = json.load(open(os.path.join(ROOT_DIR, 'secrets.json')))
+SECRETS = SECRETS_FULL['base']
+SECRET_KEY = SECRETS['SECRET_KEY']
+
 
 # django-secrets-manager의 SECRETS를 사용해서 비밀 값 할당
 AWS_ACCESS_KEY_ID = SECRETS['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = SECRETS['AWS_SECRET_ACCESS_KEY']
 
 # django-storages | AWS S3
-AWS_STORAGE_BUCKET_NAME = 'wps-instagram-phb2'
 AWS_DEFAULT_ACL = 'private'
 AWS_AUTO_CREATE_BUCKET = True
 AWS_S3_REGION_NAME = 'ap-northeast-2'
@@ -82,6 +83,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
@@ -115,12 +117,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = SECRETS['DATABASES']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
