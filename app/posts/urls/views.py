@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:pk>/like/', views.post_like, name='post-like'),
     path('create/', views.post_create, name='post-create'),
     path('<int:post_pk>/comments/create/', views.comment_create, name='comment-create'),
+    path('<int:post_pk>/comments/', views.comment_list),
 ]
